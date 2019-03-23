@@ -5,16 +5,34 @@ import { render } from "react-dom";
 class App extends React.Component {
   constructor() {
     super();
+    // imageのurlのリストを持つ
     this.state = { gifUrlList: [] };
   }
 
+  renderImagelist(list) {
+    const imageList = list.map(url => {
+      return (
+        <li>
+          <img src={url} />
+        </li>
+      );
+    });
+
+    return imageList;
+  }
+
+  // コンポーネントがマウントされた時に実行される
   componentDidMount() {
     this.giphyApi();
   }
 
   render() {
     console.log(this.state.gifUrlList);
-    return <div>App</div>;
+    return (
+      <div>
+        <ul>{this.renderImagelist(this.state.gifUrlList)}</ul>
+      </div>
+    );
   }
 
   giphyApi() {
