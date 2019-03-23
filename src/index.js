@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { render } from "react-dom";
-
+import "./App.css";
 import { Search } from "./components/Search";
 
 class App extends React.Component {
@@ -14,13 +14,13 @@ class App extends React.Component {
   renderImagelist(list) {
     const imageList = list.map(url => {
       return (
-        <li>
-          <img src={url} />
+        <li className="item">
+          <img className="image" src={url} />
         </li>
       );
     });
 
-    return imageList;
+    return <ul className="list">{imageList}</ul>;
   }
 
   render() {
@@ -28,7 +28,7 @@ class App extends React.Component {
     return (
       <div>
         <Search search={this.giphyApi} />
-        <ul>{this.renderImagelist(this.state.gifUrlList)}</ul>
+        {this.renderImagelist(this.state.gifUrlList)}
       </div>
     );
   }
@@ -36,7 +36,7 @@ class App extends React.Component {
   giphyApi = target => {
     const search = target;
     const key = "xjLtTu9xPUGfMhremUE3wChPThc9PglN";
-    const limit = 3;
+    const limit = 100;
     const url = `https://api.giphy.com/v1/gifs/search?q=${search}&api_key=${key}&limit=${limit}`;
     axios.get(url).then(res => {
       const data = res.data.data;
