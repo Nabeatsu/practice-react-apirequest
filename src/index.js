@@ -1,41 +1,33 @@
+import axios from "axios";
 import React from "react";
 import { render } from "react-dom";
 
-import axios from "axios";
-
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { member: [] };
+  constructor() {
+    super();
+    this.state = { gifUrlList: [] };
   }
 
-  memberList(list) {
-    const memberList = list.map((member, index) => {
-      return (
-        <li>
-          {member.name} {member.age}
-        </li>
-      );
-    });
-    return <ul>{memberList}</ul>;
+  componentDidMount() {
+    this.giphyApi();
   }
 
   render() {
-    console.log(this.state.member);
-    return (
-      <div>
-        <button onClick={this.getJson}>Get Json</button>
-        {this.memberList(this.state.member)}
-      </div>
-    );
+    console.log(this.state.gifUrlList);
+    return <div>App</div>;
   }
 
-  getJson = () => {
-    const url = "https://api.myjson.com/bins/12vmgu";
+  giphyApi() {
+    const search = "cat";
+    const key = "xjLtTu9xPUGfMhremUE3wChPThc9PglN";
+    const limit = 3;
+    const url = `https://api.giphy.com/v1/gifs/search?q=${search}&api_key=${key}&limit=${limit}`;
     axios.get(url).then(res => {
-      this.setState(res.data);
+      const data = res.data.data;
+      const imageUrlList = data.map(item => item.images.downsized.url);
+      this.setState({ gifUrlList: imageUrlList });
     });
-  };
+  }
 }
 
 render(<App />, document.getElementById("root"));
